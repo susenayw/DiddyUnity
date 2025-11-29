@@ -3,7 +3,7 @@ using UnityEngine;
 public class FPC_Look : MonoBehaviour
 {
     // Kecepatan sensitivitas mouse
-    public float mouseSensitivity = 100f;
+    public float mouseSensitivity = 1000f;
 
     // Referensi ke GameObject induk (Player) untuk rotasi horizontal
     public Transform playerBody;
@@ -20,8 +20,8 @@ public class FPC_Look : MonoBehaviour
     {
         // 1. INPUT MOUSE
         // Mengambil perubahan posisi mouse. Time.deltaTime digunakan untuk frame-rate independence.
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * 2 * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * 2 * Time.deltaTime;
 
         // 2. ROTASI VERTIKAL (Kamera saja - Look Up/Down)
         xRotation -= mouseY;
