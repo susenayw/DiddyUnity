@@ -3,62 +3,70 @@ using UnityEngine;
 public class TV_Controller : MonoBehaviour
 {
     [Header("TV Components")]
-    public Renderer layarTV; // Masukkan objek Screen ke sini
-    public Light lampuRuangan; // Masukkan objek Light ke sini (opsional)
+    public Renderer layarTV;
 
-    [Header("Raycast Settings")]
-    public float jarakInteraksi = 3f;
+    [Header("Interaction Checks")]
+    public SofaInteraction sofaInteraction;
+    public KeyCode tvToggleKey = KeyCode.F;
 
     private bool tvNyala = false;
 
     void Update()
     {
-        // Pengecekan keamanan: Pastikan ada kamera utama
-        if (Camera.main == null) return;
-
-        Ray sinar = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-        RaycastHit kenaSesuatu;
-
-        // Coba deteksi tabrakan sinar
-        if (Physics.Raycast(sinar, out kenaSesuatu, jarakInteraksi))
+        // Cek 1: Apakah tombol F ditekan?
+        if (Input.GetKeyDown(tvToggleKey))
         {
-            // Cek: Objek yang kena adalah "Screen", tombol E ditekan, dan variabel layarTV terisi
-            if (kenaSesuatu.collider != null && // Tambahan: Pastikan terkena collider
-                kenaSesuatu.collider.gameObject.name.Contains("Screen") &&
-                Input.GetKeyDown(KeyCode.E) &&
-                layarTV != null)
+            // Cek 2: Apakah pemain sedang duduk?
+            // Kita asumsikan sofaInteraction sudah terhubung di Inspector
+            if (sofaInteraction != null && sofaInteraction.isSitting)
             {
-                UbahStatusTV();
+                // Jika ya, ubah status TV
+                UbahStatusTV(!tvNyala);
+            }
+            else
+            {
+                Debug.Log("Anda harus duduk dulu untuk menyalakan TV!");
             }
         }
     }
 
-    void UbahStatusTV()
+    public void NyalakanTV() { UbahStatusTV(true); }
+    public void MatikanTV() { UbahStatusTV(false); }
+
+    // Ubah UbahStatusTV (Menggunakan metode URP/Lit Shader)
+    private void UbahStatusTV(bool status)
     {
-        // Pengecekan keamanan: Pastikan material ada sebelum diubah
-        if (layarTV.material == null)
+        tvNyala = status;
+
+        if (layarTV == null || layarTV.material == null)
         {
-            Debug.LogError("Material layar TV hilang! Pastikan Mat_LayarTV sudah terpasang.");
+            Debug.LogError("Material layar TV hilang!");
             return;
         }
 
-        tvNyala = !tvNyala; // Balik kondisi ON/OFF
-
         if (tvNyala)
         {
-            // Mengubah nilai "_EmissiveIntensity" pada material TV menjadi 5 (Nyala)
-            layarTV.material.SetFloat("_EmissiveIntensity", 5f);
+            Color emissionColor = Color.white;
+            float intensity = 5.0f; // Tingkat kecerahan
 
-            // Nyalakan lampu plafon
-            if (lampuRuangan) lampuRuangan.enabled = true;
+            // 1. Aktifkan Emission Keyword (Wajib untuk URP)
+            layarTV.material.EnableKeyword("_EMISSION");
+
+            // 2. Set warna (putih dikalikan intensitas 5.0f)
+            // Ini menggantikan layarTV.material.SetFloat("_EmissiveIntensity", 5f);
+            layarTV.material.SetColor("_EmissionColor", emissionColor * intensity);
+
+            Debug.Log("TV Dinyalakan dengan Tombol F.");
         }
         else
         {
-            // Mengubah nilai "_EmissiveIntensity" pada material TV menjadi 0 (Mati)
-            layarTV.material.SetFloat("_EmissiveIntensity", 0f);
+            // 1. Matikan Emission (Set warna ke hitam/nol)
+            layarTV.material.SetColor("_EmissionColor", Color.black);
 
-            // Matikan lampu plafon
-            if (lampuRuangan) lampuRuangan.enabled = false;
+            // 2. Nonaktifkan Emission Keyword 
+            layarTV.material.DisableKeyword("_EMISSION");
+
+            Debug.Log("TV Dimatikan dengan Tombol F.");
         }
     }
 }

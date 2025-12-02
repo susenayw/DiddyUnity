@@ -304,7 +304,12 @@ MonoBehaviour:
   sitPoint: {fileID: 1813283898}
   player: {fileID: 1785655638}
   interactKey: 101
+  cameraLookScript: {fileID: 1942209368}
+  tvController: {fileID: 380574676}
+  playerMovementScript: {fileID: 1785655640}
+  playerLookScript: {fileID: 1942209367}
   smoothSpeed: 5
+  isSitting: 0
 --- !u!1 &380574674
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,6 +319,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 380574675}
+  - component: {fileID: 380574676}
   m_Layer: 0
   m_Name: TV
   m_TagString: Untagged
@@ -339,6 +345,21 @@ Transform:
   - {fileID: 500286931}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &380574676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 380574674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be6fbeaf879d1f74d9ee727fb80c3d4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TV_Controller
+  layarTV: {fileID: 1045535728}
+  sofaInteraction: {fileID: 231004530}
+  tvToggleKey: 102
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1075,21 +1096,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5049257911310416535, guid: 190bb6788980f7749890308450c86165, type: 3}
   m_PrefabInstance: {fileID: 1997540339}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1785655639
+--- !u!114 &1785655640 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1927123780422880149, guid: 190bb6788980f7749890308450c86165, type: 3}
+  m_PrefabInstance: {fileID: 1997540339}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1785655638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be6fbeaf879d1f74d9ee727fb80c3d4f, type: 3}
+  m_Script: {fileID: 11500000, guid: 2361aab54629b55469b97f3e65240a9a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TV_Controller
-  layarTV: {fileID: 1045535728}
-  lampuRuangan: {fileID: 410087040}
-  jarakInteraksi: 10
+  m_EditorClassIdentifier: Assembly-CSharp::FPC_Movement
 --- !u!1 &1813283897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,13 +1131,35 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1813283897}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.9999732, z: -0, w: -0.007323881}
-  m_LocalPosition: {x: 0.47, y: 0.5, z: -2.72}
+  m_LocalRotation: {x: -0.03423977, y: -0.7035447, z: -0.04125531, w: 0.70862585}
+  m_LocalPosition: {x: 0.39, y: 0.52, z: -3.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 231004528}
-  m_LocalEulerAnglesHint: {x: 0, y: -180.839, z: 0}
+  m_LocalEulerAnglesHint: {x: -6.118, y: -89.556, z: -0.593}
+--- !u!114 &1942209367 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3704445975135850446, guid: 190bb6788980f7749890308450c86165, type: 3}
+  m_PrefabInstance: {fileID: 1997540339}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 620a727e4e5fb06459dca55d9902afe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FPC_Look
+--- !u!114 &1942209368 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1983507874900266958, guid: 190bb6788980f7749890308450c86165, type: 3}
+  m_PrefabInstance: {fileID: 1997540339}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
 --- !u!1001 &1997540339
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1169,6 +1208,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1927123780422880149, guid: 190bb6788980f7749890308450c86165, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3639283632702604637, guid: 190bb6788980f7749890308450c86165, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.15
@@ -1189,6 +1232,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5049257911310416535, guid: 190bb6788980f7749890308450c86165, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 8589013251675036797, guid: 190bb6788980f7749890308450c86165, type: 3}
       propertyPath: m_TagString
       value: MainCamera
@@ -1196,10 +1243,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5049257911310416535, guid: 190bb6788980f7749890308450c86165, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1785655639}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 190bb6788980f7749890308450c86165, type: 3}
 --- !u!1 &2108299471
 GameObject:
