@@ -1703,8 +1703,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8062beb331adfa46a53a6415f70f395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
-  interactionDistance: 3
-  interactionKey: 101
 --- !u!114 &1785655644 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1927123780422880149, guid: 190bb6788980f7749890308450c86165, type: 3}
@@ -1915,6 +1913,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2506950223012445746, guid: 190bb6788980f7749890308450c86165, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2506950223012445746, guid: 190bb6788980f7749890308450c86165, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 67e9dc0aa2313964581f4d067f496faf, type: 2}
     - target: {fileID: 3639283632702604637, guid: 190bb6788980f7749890308450c86165, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.15
@@ -1939,6 +1945,14 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5903500155105409010, guid: 190bb6788980f7749890308450c86165, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5903500155105409010, guid: 190bb6788980f7749890308450c86165, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 67e9dc0aa2313964581f4d067f496faf, type: 2}
     - target: {fileID: 8589013251675036797, guid: 190bb6788980f7749890308450c86165, type: 3}
       propertyPath: m_TagString
       value: MainCamera
