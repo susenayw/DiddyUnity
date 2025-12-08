@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 280090777482561204}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.05, y: 0.502, z: -2.21}
+  m_LocalPosition: {x: 0.212, y: 0.502, z: -2.21}
   m_LocalScale: {x: 1.41, y: 1, z: 0.59}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -120,7 +120,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4104201227568444923}
-  - component: {fileID: 654563536417390972}
   - component: {fileID: 8041939090108140379}
   m_Layer: 0
   m_Name: Sofa
@@ -149,27 +148,6 @@ Transform:
   - {fileID: 1213806028531464802}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &654563536417390972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 851087454509470787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e30cc87b7fc21ff4aa14dd84d9e2ec98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SofaInteraction
-  sitPoint: {fileID: 1213806028531464802}
-  player: {fileID: 0}
-  interactKey: 101
-  cameraLookScript: {fileID: 0}
-  tvController: {fileID: 0}
-  playerMovementScript: {fileID: 0}
-  playerLookScript: {fileID: 0}
-  smoothSpeed: 5
-  isSitting: 0
 --- !u!65 &8041939090108140379
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -216,7 +194,7 @@ Transform:
   m_GameObject: {fileID: 1220045015072706707}
   serializedVersion: 2
   m_LocalRotation: {x: -0.03423977, y: -0.7035447, z: -0.04125531, w: 0.70862585}
-  m_LocalPosition: {x: 0.39, y: 0.52, z: -3.37}
+  m_LocalPosition: {x: 0.389, y: 0.523, z: -3.624}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -250,7 +228,7 @@ Transform:
   m_GameObject: {fileID: 3557402663594727273}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.13, y: 0, z: -3.77}
+  m_LocalPosition: {x: 0.13, y: -0.06, z: -3.77}
   m_LocalScale: {x: 1, y: 1, z: 3.71}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -472,7 +450,7 @@ Transform:
   m_GameObject: {fileID: 6183951154392923097}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.05, y: 0.502, z: -5.33}
+  m_LocalPosition: {x: 0.212, y: 0.502, z: -5.33}
   m_LocalScale: {x: 1.41, y: 1, z: 0.59}
   m_ConstrainProportionsScale: 0
   m_Children: []
