@@ -36,6 +36,13 @@ public class Raycast_Interaction : MonoBehaviour
 
     void Update()
     {
+        // CRITICAL FIX: Block all raycasting and input if the game is paused
+        if (PauseMenu.GameIsPaused)
+        {
+            interactionPromptText.gameObject.SetActive(false);
+            return; 
+        }
+        
         // --- 0. DROP LOGIC (Highest Priority) ---
         // Player is holding an item and presses Q.
         if (currentHeldItem != null && Input.GetKeyDown(KeyCode.Q))
@@ -43,7 +50,40 @@ public class Raycast_Interaction : MonoBehaviour
             DropItem();
             return; // Exit Update() immediately after dropping
         }
+        
+        // --- End Game Button Check (New highest priority interaction) ---
+        if (CheckEndGameButton()) return;
+        
+        // --- Standard Interactions ---
+        CheckInteraction();
+    }
+    
+    // NEW: Dedicated function for the End Game Button logic
+    bool CheckEndGameButton()
+    {
+        RaycastHit hit;
+        Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 
+        if (Physics.Raycast(ray, out hit, interactionDistance))
+        {
+            EndGameButton endButton = hit.collider.gameObject.GetComponent<EndGameButton>();
+            if (endButton != null)
+            {
+                interactionPromptText.text = "Press F to end";
+                interactionPromptText.gameObject.SetActive(true);
+
+                if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.JoystickButton0))
+                {
+                    endButton.EndGame();
+                }
+                return true; // Interaction handled, stop checking others
+            }
+        }
+        return false;
+    }
+
+    void CheckInteraction()
+    {
         Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
         
@@ -59,7 +99,7 @@ public class Raycast_Interaction : MonoBehaviour
         {
             GameObject hitObject = hit.collider.gameObject;
 
-            // --- A. Item Pickup Check (NEW HIGHEST PRIORITY) ---
+            // --- A. Item Pickup Check ---
             ItemPickup pickup = hitObject.GetComponent<ItemPickup>();
             if (pickup != null && currentHeldItem == null && !playerIsSeated)
             {
@@ -74,7 +114,7 @@ public class Raycast_Interaction : MonoBehaviour
             if (interactableTarget == null && seat != null && !playerIsSeated && seat.IsAvailable())
             {
                 interactableTarget = seat;
-                promptMessage = "Press F to seat";
+                promptMessage = "Press F to sit";
             }
             
             // --- C. Oil Spawner Button ---
