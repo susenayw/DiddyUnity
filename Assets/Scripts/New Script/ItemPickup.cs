@@ -7,25 +7,24 @@ public class ItemPickup : MonoBehaviour
     public Vector3 holdPosition = new Vector3(0.344f, -0.244f, 0.442f); 
     public Vector3 holdRotation = new Vector3(0f, -90f, 0f);           
     
-    // NEW: Reference to the Oil Prefab for shooting (Drag your Oil Prefab here!)
     [Header("Weapon Settings")]
     public GameObject projectilePrefab;
-    public float shootForce = 1500f; // Force to push the oil forward
+    public float shootForce = 1500f;
 
     // Other references
     private GameObject playerHand;
     private TV_Controller tvController; 
     private bool isHeld = false;
+    private Transform mainCameraTransform; // Cached Camera reference
     
-    // Cached Camera reference for shooting direction
-    private Transform mainCameraTransform; 
+    // Scaling Variables
+    public float scaleRaycastDistance = 10f;
 
     void Start()
     {
         playerHand = GameObject.Find("hand"); 
         tvController = FindObjectOfType<TV_Controller>();
 
-        // Cache the camera transform for shooting direction
         if (Camera.main != null)
         {
             mainCameraTransform = Camera.main.transform;
@@ -39,21 +38,47 @@ public class ItemPickup : MonoBehaviour
             // Check if this item is the pistol (based on its name)
             if (gameObject.name.ToLower().Contains("pistol"))
             {
-                // --- PISTOL SHOOTING LOGIC ---
-                if (Input.GetMouseButtonDown(0)) // Left Click
+                // --- PISTOL SHOOTING LOGIC (Left Click) ---
+                if (Input.GetMouseButtonDown(0))
                 {
                     ShootProjectile();
                 }
             }
+            // Check if this item is the remote (based on its name)
             else if (gameObject.name.ToLower().Contains("remote"))
             {
-                // --- REMOTE TV LOGIC (Original) ---
+                // --- REMOTE TV TOGGLE LOGIC (Left Click) ---
                 if (Input.GetMouseButtonDown(0))
                 {
                     if (tvController != null)
                     {
                         tvController.TogglePower();
                     }
+                }
+                
+                // --- SCALING LOGIC (Right Click) ---
+                CheckScalingInput();
+            }
+        }
+    }
+
+    // Function to handle the scaling raycast when holding the remote
+    private void CheckScalingInput()
+    {
+        // Check for Right Click down (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1)) 
+        {
+            // Raycast from the center of the camera
+            Ray ray = mainCameraTransform.GetComponent<Camera>().ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            RaycastHit hit;
+            
+            if (Physics.Raycast(ray, out hit, scaleRaycastDistance))
+            {
+                // Check if the hit object has the Scalable component
+                ScalableObject scalableTarget = hit.collider.GetComponent<ScalableObject>();
+                if (scalableTarget != null)
+                {
+                    scalableTarget.ToggleScale();
                 }
             }
         }
@@ -67,11 +92,11 @@ public class ItemPickup : MonoBehaviour
             return;
         }
 
-        // 1. Instantiate the projectile slightly in front of the pistol/camera
+        // 1. Instantiate the projectile
         GameObject projectile = Instantiate(
             projectilePrefab, 
-            mainCameraTransform.position + mainCameraTransform.forward * 0.5f, // Spawn slightly forward
-            mainCameraTransform.rotation // Match camera rotation
+            mainCameraTransform.position + mainCameraTransform.forward * 0.5f,
+            mainCameraTransform.rotation
         );
 
         // 2. Get the Rigidbody and shoot it forward
@@ -79,6 +104,12 @@ public class ItemPickup : MonoBehaviour
         if (rb != null)
         {
             rb.AddForce(mainCameraTransform.forward * shootForce);
+        }
+        
+        // Increment the global counter
+        if (OilCounterManager.Instance != null)
+        {
+            OilCounterManager.Instance.IncrementOilCount();
         }
         
         Debug.Log("Fired: " + projectilePrefab.name);
@@ -96,13 +127,11 @@ public class ItemPickup : MonoBehaviour
     
     public void SetInHand(bool inHand)
     {
-        isHeld = inHand; // Update the held state
+        isHeld = inHand;
         
-        // Physics and Collider management remains the same
         if (GetComponent<Rigidbody>() != null) GetComponent<Rigidbody>().isKinematic = inHand;
         if (GetComponent<Collider>() != null) GetComponent<Collider>().enabled = !inHand;
         
-        // Hide/show the hand
         if (playerHand != null)
         {
             playerHand.SetActive(!inHand); 

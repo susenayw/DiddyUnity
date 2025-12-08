@@ -42,11 +42,12 @@ public class FPC_Controller : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false; // Hide cursor at start
         characterController = GetComponentInParent<CharacterController>();
         
         if (characterController != null)
         {
-            // FIX: Store the settings exactly as they are configured in the Inspector
+            // Store the initial settings exactly as they are configured in the Inspector
             originalCameraY = transform.localPosition.y;
             originalCCHeight = characterController.height; 
             originalCCCenter = characterController.center;
@@ -57,6 +58,13 @@ public class FPC_Controller : MonoBehaviour
     void Update()
     {
         if (characterController == null) return; 
+        
+        // CRITICAL FIX: Block all movement and camera look if the game is paused
+        // This stops movement/look even if Time.timeScale is 0.
+        if (PauseMenu.GameIsPaused)
+        {
+            return; 
+        }
         
         // 0. --- CROUCH INPUT ---
         if (!isSeated)
@@ -91,6 +99,7 @@ public class FPC_Controller : MonoBehaviour
             }
             
             // --- JUMP ---
+            // Prevent jumping if currently crouched
             bool canJump = !isCrouched;
 
             if (canJump && (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.JoystickButton3)) && isControllerGrounded)
@@ -106,10 +115,12 @@ public class FPC_Controller : MonoBehaviour
 
             float currentSpeed = moveSpeed;
             
+            // Apply crouch speed multiplier
             if (isCrouched)
             {
                 currentSpeed *= crouchSpeedMultiplier;
             }
+            // Apply run speed if standing and running
             else if (Input.GetKey(KeyCode.LeftShift) && (x != 0 || z != 0))
             {
                 currentSpeed = runSpeed;
@@ -119,20 +130,23 @@ public class FPC_Controller : MonoBehaviour
             characterController.Move((move * currentSpeed * Time.deltaTime) + (velocity * Time.deltaTime));
         }
 
-        // 2. --- CAMERA LOOK (Remains the same) ---
+        // 2. --- CAMERA LOOK ---
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
         
         float finalMouseX = mouseX * mouseSensitivity;
         float finalMouseY = mouseY * mouseSensitivity;
 
+        // Apply Vertical Look
         xRotation -= finalMouseY;
         
+        // Clamping vertical look
         float maxVerticalAngle = isSeated ? 45f : 90f;
         xRotation = Mathf.Clamp(xRotation, -maxVerticalAngle, maxVerticalAngle);
 
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         
+        // Apply Horizontal Look
         if (isSeated)
         {
              playerBody.Rotate(Vector3.up * finalMouseX);
