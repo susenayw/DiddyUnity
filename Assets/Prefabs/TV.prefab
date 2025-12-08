@@ -231,7 +231,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5697631496230154754}
-  - component: {fileID: 4851981122866278134}
+  - component: {fileID: 6693006489814069066}
   m_Layer: 0
   m_Name: TV
   m_TagString: Untagged
@@ -257,7 +257,7 @@ Transform:
   - {fileID: 5402532230005521971}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4851981122866278134
+--- !u!114 &6693006489814069066
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -266,12 +266,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6377480621520660173}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be6fbeaf879d1f74d9ee727fb80c3d4f, type: 3}
+  m_Script: {fileID: 11500000, guid: cd1671be01510ef4f81b5c4b661b929a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TV_Controller
-  layarTV: {fileID: 46642897302943511}
-  sofaInteraction: {fileID: 0}
-  tvToggleKey: 102
+  screenMesh: {fileID: 4262876634585291434}
+  screenOnMaterial: {fileID: 2100000, guid: 574f23e230a325d429a24ee754d0453b, type: 2}
+  screenOffMaterial: {fileID: 2100000, guid: bcfb31608604f8048a4416e6682410ff, type: 2}
 --- !u!1 &8628387526300225682
 GameObject:
   m_ObjectHideFlags: 0

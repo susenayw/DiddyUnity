@@ -3,14 +3,10 @@ using UnityEngine;
 public class OilSpawner : MonoBehaviour
 {
     [Header("Spawner Setup")]
-    // Drag your Oil Prefab into this slot in the Inspector
-    public GameObject oilPrefab; 
-    
-    // Drag an empty GameObject (or the button's position) into this slot.
-    // This defines where the oil will appear.
-    public Transform spawnPoint; 
+    public GameObject oilPrefab;
+    public Transform spawnPoint;
 
-    // This is the function the Raycast_Interaction script will call
+    // Public method called by the Raycast_Interaction script
     public void SpawnOil()
     {
         if (oilPrefab == null || spawnPoint == null)
@@ -19,9 +15,13 @@ public class OilSpawner : MonoBehaviour
             return;
         }
 
-        // Instantiate the oil object at the specified spawn point position and rotation
+        // Instantiate the oil object
         GameObject newOil = Instantiate(oilPrefab, spawnPoint.position, spawnPoint.rotation);
         
-        Debug.Log("Oil spawned successfully!");
+        // Increment the global counter
+        if (OilCounterManager.Instance != null)
+        {
+            OilCounterManager.Instance.IncrementOilCount();
+        }
     }
 }
