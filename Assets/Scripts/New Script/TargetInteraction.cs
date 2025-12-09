@@ -11,8 +11,18 @@ public class TargetInteraction : MonoBehaviour
     private Renderer targetRenderer;
     private Coroutine flashCoroutine;
 
+    [Header("Audio Settings")]
+    [SerializeField] private AudioClip hitFX; // Optional sound effect
+    private AudioSource audioSource;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+         if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
         targetRenderer = GetComponent<Renderer>();
         if (targetRenderer != null)
         {
@@ -44,6 +54,7 @@ public class TargetInteraction : MonoBehaviour
         // Change the color instantly to red
         if (targetRenderer != null)
         {
+            audioSource.PlayOneShot(hitFX);
             targetRenderer.material.color = hitColor;
         }
 

@@ -11,6 +11,10 @@ public class ItemPickup : MonoBehaviour
     public GameObject projectilePrefab;
     public float shootForce = 1500f;
 
+    [Header("Audio File")]
+    [SerializeField] private AudioClip shootSFX; // Suara yang akan dimainkan
+    private AudioSource audioSource;
+
     // Other references
     private GameObject playerHand;
     private TV_Controller tvController; 
@@ -22,6 +26,7 @@ public class ItemPickup : MonoBehaviour
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         playerHand = GameObject.Find("hand"); 
         tvController = FindObjectOfType<TV_Controller>();
 
@@ -41,6 +46,8 @@ public class ItemPickup : MonoBehaviour
                 // --- PISTOL SHOOTING LOGIC (Left Click) ---
                 if (Input.GetMouseButtonDown(0))
                 {
+                    audioSource.clip = shootSFX;
+                    audioSource.Play();
                     ShootProjectile();
                 }
             }
