@@ -10,9 +10,9 @@ public class Raycast_Interaction : MonoBehaviour
     
     // REFERENCES
     private FPC_Controller fpcController; 
-    // NEW: The Item currently being held
+    // The Item currently being held
     private ItemPickup currentHeldItem = null;
-    // NEW: The Transform where the item should be held (must be assigned in Inspector)
+    // The Transform where the item should be held (must be assigned in Inspector)
     public Transform itemHoldParent; 
 
     void Start()
@@ -58,7 +58,7 @@ public class Raycast_Interaction : MonoBehaviour
         CheckInteraction();
     }
     
-    // NEW: Dedicated function for the End Game Button logic
+    // Dedicated function for the End Game Button logic
     bool CheckEndGameButton()
     {
         RaycastHit hit;
@@ -99,18 +99,24 @@ public class Raycast_Interaction : MonoBehaviour
         {
             GameObject hitObject = hit.collider.gameObject;
 
+            // --- G. TELEPORT BUTTON CHECK (NEW) ---
+            TeleportButton teleportButton = hitObject.GetComponent<TeleportButton>();
+            if (teleportButton != null && !playerIsSeated)
+            {
+                interactableTarget = teleportButton;
+                promptMessage = "Press F to teleport";
+            }
+            
             // --- A. Item Pickup Check ---
             ItemPickup pickup = hitObject.GetComponent<ItemPickup>();
-            if (pickup != null && currentHeldItem == null && !playerIsSeated)
+            if (interactableTarget == null && pickup != null && currentHeldItem == null && !playerIsSeated)
             {
-                // Found an item to pick up, and we aren't holding anything
                 interactableTarget = pickup;
                 promptMessage = "Press F to pick up";
             }
 
             // --- B. Seat Interaction ---
             SeatInteraction seat = hitObject.GetComponent<SeatInteraction>();
-            // Only check if no other target is found, player isn't seated, and seat is available
             if (interactableTarget == null && seat != null && !playerIsSeated && seat.IsAvailable())
             {
                 interactableTarget = seat;
@@ -183,7 +189,16 @@ public class Raycast_Interaction : MonoBehaviour
             else if (interactableTarget != null)
             {
                 // Dispatch interaction based on target type
-                if (interactableTarget is ItemPickup pickup)
+                
+                // DISPATCH FOR TELEPORT BUTTON (NEW)
+                if (interactableTarget is TeleportButton button)
+                {
+                    if (fpcController != null)
+                    {
+                        button.TeleportPlayer(fpcController.playerBody.gameObject);
+                    }
+                }
+                else if (interactableTarget is ItemPickup pickup)
                 {
                     PickUpItem(pickup); 
                 }
