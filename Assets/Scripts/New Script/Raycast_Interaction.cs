@@ -6,14 +6,12 @@ public class Raycast_Interaction : MonoBehaviour
     [Header("Setup")]
     public float interactionDistance = 3f;
     public TextMeshProUGUI interactionPromptText; 
+    public Transform itemHoldParent; // The Transform where the item should be held
+
     private Camera mainCamera;
-    
-    // REFERENCES
     private FPC_Controller fpcController; 
-    // The Item currently being held
     private ItemPickup currentHeldItem = null;
-    // The Transform where the item should be held (must be assigned in Inspector)
-    public Transform itemHoldParent; 
+    
 
     void Start()
     {
@@ -44,11 +42,10 @@ public class Raycast_Interaction : MonoBehaviour
         }
         
         // --- 0. DROP LOGIC (Highest Priority) ---
-        // Player is holding an item and presses Q.
         if (currentHeldItem != null && Input.GetKeyDown(KeyCode.Q))
         {
             DropItem();
-            return; // Exit Update() immediately after dropping
+            return; 
         }
         
         // --- End Game Button Check (New highest priority interaction) ---
@@ -76,7 +73,7 @@ public class Raycast_Interaction : MonoBehaviour
                 {
                     endButton.EndGame();
                 }
-                return true; // Interaction handled, stop checking others
+                return true; 
             }
         }
         return false;
@@ -99,7 +96,7 @@ public class Raycast_Interaction : MonoBehaviour
         {
             GameObject hitObject = hit.collider.gameObject;
 
-            // --- G. TELEPORT BUTTON CHECK (NEW) ---
+            // --- G. TELEPORT BUTTON CHECK ---
             TeleportButton teleportButton = hitObject.GetComponent<TeleportButton>();
             if (teleportButton != null && !playerIsSeated)
             {
@@ -128,7 +125,7 @@ public class Raycast_Interaction : MonoBehaviour
             if (interactableTarget == null && oilSpawner != null && !playerIsSeated)
             {
                 interactableTarget = oilSpawner;
-                promptMessage = "Press F or Square/X to SPAWN OIL";
+                promptMessage = "Press F to SPAWN OIL";
             }
 
             // --- D. Door Button Interaction ---
@@ -136,7 +133,7 @@ public class Raycast_Interaction : MonoBehaviour
             if (interactableTarget == null && doorButtonRef != null && doorButtonRef.targetDoor != null && !playerIsSeated)
             {
                 interactableTarget = doorButtonRef.targetDoor;
-                promptMessage = "Press F or Square/X to USE BUTTON"; 
+                promptMessage = "Press F to USE BUTTON"; 
             }
 
             // --- E. Direct Door Interaction ---
@@ -190,7 +187,7 @@ public class Raycast_Interaction : MonoBehaviour
             {
                 // Dispatch interaction based on target type
                 
-                // DISPATCH FOR TELEPORT BUTTON (NEW)
+                // DISPATCH FOR TELEPORT BUTTON
                 if (interactableTarget is TeleportButton button)
                 {
                     if (fpcController != null)
