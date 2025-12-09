@@ -1158,7 +1158,9 @@ MonoBehaviour:
     Assets\r\n-Hands:\r\n    -Source: [https://www.fab.com/listings/f84c81d6-856b-412a-a4d2-daf55177e8e3](https://www.fab.com/listings/f84c81d6-856b-412a-a4d2-daf55177e8e3)\r\n-Cartoon
     Pistol:\r\n    -Source: [https://www.fab.com/listings/38a32189-5544-444f-a810-a34444109ebb](https://www.fab.com/listings/38a32189-5544-444f-a810-a34444109ebb)\r\n-Remote:\r\n   
     -Source: [https://www.fab.com/listings/4c17f6bc-0d1a-4fd1-946d-84f26e5014ea](https://www.fab.com/listings/4c17f6bc-0d1a-4fd1-946d-84f26e5014ea)\r\n\r\nAudio
-    SFX/Music: (Please insert sources for sound effects and music here)\r\n\r\nAssistance\r\nAI
+    SFX/Music: \n- Button, shoot, and hit sound effects by Luthfi\n- Walking sounds
+    (src: https://youtu.be/mPgGg4MJKKc?si=joaAKG0fQ0tCdk8M)\n- Plastic drop SFX (src:
+    https://youtu.be/v7U572lGFj8?si=g0OSm_zSQJ-8S8xx)\n- Music (src: https://youtu.be/XS6_b-XcJ70)\r\n\r\nAssistance\r\nAI
     Assistance provided by gemini.google.com"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0d238644202633542b08cd7a01750626, type: 2}
