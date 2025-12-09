@@ -7,15 +7,18 @@ public class DoorInteraction : MonoBehaviour
     [Header("Sliding Settings")]
     public float slideDistance = 2f; // How far the door slides (e.g., 2 units)
     public float speed = 5f;        // Use a slightly higher speed for position lerping
-    
+    [SerializeField] private AudioClip doorSound; // Optional sound effect
+
     private Vector3 closedPosition;
     private Vector3 openPosition;
+    private AudioSource audioSource;
 
     void Start()
     {
         // Store the door's starting position as the "closed" state
         closedPosition = transform.localPosition;
-        
+        audioSource = GetComponent<AudioSource>();
+
         // Calculate the "open" position. We assume the door slides along its RIGHT (X) axis.
         // If your door needs to slide along Z (forward) or Y (up/down), change Vector3.right to 
         // Vector3.forward or Vector3.up, respectively.
@@ -42,6 +45,8 @@ public class DoorInteraction : MonoBehaviour
         isOpen = !isOpen;
         
         // Play a sound or particles here if you wish
+        audioSource.clip = doorSound;
+        audioSource.Play();
         Debug.Log(gameObject.name + " was toggled. Open: " + isOpen);
     }
 }

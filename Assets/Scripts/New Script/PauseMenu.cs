@@ -82,6 +82,6 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f; 
         
         // NOTE: Make sure you have added the "MainMenuScene" to your Build Settings!
-        SceneManager.LoadScene("MainMenuScene.unity");
+        SceneManager.LoadScene("MainMenuScene");
     }
 }

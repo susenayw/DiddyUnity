@@ -6,14 +6,12 @@ public class Raycast_Interaction : MonoBehaviour
     [Header("Setup")]
     public float interactionDistance = 3f;
     public TextMeshProUGUI interactionPromptText; 
+    public Transform itemHoldParent; // The Transform where the item should be held
+
     private Camera mainCamera;
-    
-    // REFERENCES
     private FPC_Controller fpcController; 
-    // NEW: The Item currently being held
     private ItemPickup currentHeldItem = null;
-    // NEW: The Transform where the item should be held (must be assigned in Inspector)
-    public Transform itemHoldParent; 
+    
 
     void Start()
     {
@@ -44,11 +42,10 @@ public class Raycast_Interaction : MonoBehaviour
         }
         
         // --- 0. DROP LOGIC (Highest Priority) ---
-        // Player is holding an item and presses Q.
         if (currentHeldItem != null && Input.GetKeyDown(KeyCode.Q))
         {
             DropItem();
-            return; // Exit Update() immediately after dropping
+            return; 
         }
         
         // --- End Game Button Check (New highest priority interaction) ---
@@ -58,7 +55,7 @@ public class Raycast_Interaction : MonoBehaviour
         CheckInteraction();
     }
     
-    // NEW: Dedicated function for the End Game Button logic
+    // Dedicated function for the End Game Button logic
     bool CheckEndGameButton()
     {
         RaycastHit hit;
@@ -76,7 +73,7 @@ public class Raycast_Interaction : MonoBehaviour
                 {
                     endButton.EndGame();
                 }
-                return true; // Interaction handled, stop checking others
+                return true; 
             }
         }
         return false;
@@ -99,18 +96,24 @@ public class Raycast_Interaction : MonoBehaviour
         {
             GameObject hitObject = hit.collider.gameObject;
 
+            // --- G. TELEPORT BUTTON CHECK ---
+            TeleportButton teleportButton = hitObject.GetComponent<TeleportButton>();
+            if (teleportButton != null && !playerIsSeated)
+            {
+                interactableTarget = teleportButton;
+                promptMessage = "Press F to teleport";
+            }
+            
             // --- A. Item Pickup Check ---
             ItemPickup pickup = hitObject.GetComponent<ItemPickup>();
-            if (pickup != null && currentHeldItem == null && !playerIsSeated)
+            if (interactableTarget == null && pickup != null && currentHeldItem == null && !playerIsSeated)
             {
-                // Found an item to pick up, and we aren't holding anything
                 interactableTarget = pickup;
                 promptMessage = "Press F to pick up";
             }
 
             // --- B. Seat Interaction ---
             SeatInteraction seat = hitObject.GetComponent<SeatInteraction>();
-            // Only check if no other target is found, player isn't seated, and seat is available
             if (interactableTarget == null && seat != null && !playerIsSeated && seat.IsAvailable())
             {
                 interactableTarget = seat;
@@ -122,7 +125,7 @@ public class Raycast_Interaction : MonoBehaviour
             if (interactableTarget == null && oilSpawner != null && !playerIsSeated)
             {
                 interactableTarget = oilSpawner;
-                promptMessage = "Press F or Square/X to SPAWN OIL";
+                promptMessage = "Press F to SPAWN OIL";
             }
 
             // --- D. Door Button Interaction ---
@@ -130,7 +133,7 @@ public class Raycast_Interaction : MonoBehaviour
             if (interactableTarget == null && doorButtonRef != null && doorButtonRef.targetDoor != null && !playerIsSeated)
             {
                 interactableTarget = doorButtonRef.targetDoor;
-                promptMessage = "Press F or Square/X to USE BUTTON"; 
+                promptMessage = "Press F to USE BUTTON"; 
             }
 
             // --- E. Direct Door Interaction ---
@@ -183,7 +186,16 @@ public class Raycast_Interaction : MonoBehaviour
             else if (interactableTarget != null)
             {
                 // Dispatch interaction based on target type
-                if (interactableTarget is ItemPickup pickup)
+                
+                // DISPATCH FOR TELEPORT BUTTON
+                if (interactableTarget is TeleportButton button)
+                {
+                    if (fpcController != null)
+                    {
+                        button.TeleportPlayer(fpcController.playerBody.gameObject);
+                    }
+                }
+                else if (interactableTarget is ItemPickup pickup)
                 {
                     PickUpItem(pickup); 
                 }
