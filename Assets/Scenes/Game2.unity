@@ -949,7 +949,7 @@ Transform:
   m_GameObject: {fileID: 214152792}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 25.894, y: 2.05, z: -7.234}
+  m_LocalPosition: {x: 25.899, y: 2.05, z: -7.234}
   m_LocalScale: {x: 1.31, y: 2.245532, z: 0.07618691}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2843,6 +2843,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1214746095 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8949013916909176349, guid: 24f34e813f16e1c4480e3076c97b4482, type: 3}
+  m_PrefabInstance: {fileID: 1748957332}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1276747786
 GameObject:
   m_ObjectHideFlags: 0
@@ -3730,7 +3735,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.273
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -3940,7 +3945,11 @@ PrefabInstance:
     - target: {fileID: 3645382990008634966, guid: 24f34e813f16e1c4480e3076c97b4482, type: 3}
       propertyPath: mainCamera
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1843318810}
+    - target: {fileID: 3645382990008634966, guid: 24f34e813f16e1c4480e3076c97b4482, type: 3}
+      propertyPath: mirrorSurface
+      value: 
+      objectReference: {fileID: 1214746095}
     - target: {fileID: 8949013916909176349, guid: 24f34e813f16e1c4480e3076c97b4482, type: 3}
       propertyPath: m_LocalScale.y
       value: 4.472498
